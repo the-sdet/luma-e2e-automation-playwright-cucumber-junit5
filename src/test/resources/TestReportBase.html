@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Automation Test Results</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        a {
+            color: #037eca;
+            text-decoration: none;
+        }
+
+        .top {
+            color: black;
+            font-weight: bold;
+            text-align: left;
+            width: 50%;
+        }
+
+        .summary-cell {
+            width: 50%;
+            text-align: left;
+        }
+
+        #div2,
+        #div3,
+        #div1 {
+            display: table;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #div1 {
+            width: 80%;
+            margin-bottom: 15px;
+        }
+
+        #div2 {
+            width: 80%;
+            float: none;
+            margin-bottom: 30px;
+        }
+
+        #div3 {
+            margin-bottom: 10px;
+            vertical-align: middle;
+            width: 80%;
+            height: 250px;
+            background-color: #ffffff;
+            float: none;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 8px;
+            border: 1px solid gray;
+            width: 10%;
+        }
+
+        .first-col {
+            color: #037eca;
+            text-align: left;
+            width: 25%;
+        }
+
+        .first-col-heading {
+            color: black;
+            font-weight: bold;
+            text-align: left;
+            width: 25%;
+        }
+        .cred{
+            text-align: left;
+            width: 25%;
+        }
+
+        th {
+            background-color: #66CCEE;
+            color: black
+        }
+
+        .pass {
+            background-color: #92DD96;
+        }
+
+        .fail {
+            background-color: #F2928C;
+        }
+
+        .total {
+            background-color: lightgray;
+        }
+
+        .logo {
+            width: 15%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+</body>
+<div id="div1">
+    <table class="summary">
+        <tr>
+            <th class="top" colspan="3">$reportName</th>
+        </tr>
+        <tr>
+            <td class="top">Environment:</td>
+            <td class="summary-cell"><a href="$envURL" target="_blank">$envURL</a></td>
+        </tr>
+        <tr>
+            <td class="top">OS & Browser</td>
+            <td class="summary-cell">Windows ($browser)</td>
+        </tr>
+        <tr>
+            <td class="top">Executed By:</td>
+            <td class="summary-cell">Automation User</td>
+        </tr>
+        <tr>
+            <td class="top">Execution Date & Time:</td>
+            <td class="summary-cell">$dateTime</td>
+        </tr>
+
+        </thead>
+    </table>
+</div>
+<div id="div2">
+    <table>
+        <thead>
+            <tr>
+                <th class="first-col-heading">Feature Name</th>
+                <th class="cred">Test Credentials</th>
+                <th>Pass</th>
+                <th>Fail</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th class="last-col">Pass (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            InsertTestResultsHere
+        </tbody>
+    </table>
+</div>
+<div id="div3">
+    <canvas id="pie-chart"></canvas>
+</div>
+<script>
+    const passCount = parseInt(document.querySelector('.pass_total').textContent);
+    const failCount = parseInt(document.querySelector('.fail_total').textContent);
+    const totalCount = passCount + failCount;
+
+    // Create the data for the chart
+    const data = {
+        labels: ['Pass', 'Fail'],
+        datasets: [{
+            data: [passCount, failCount],
+            backgroundColor: ['#4cd553', '#e56259']
+        }]
+    };
+
+    // Create the chart
+    const ctx = document.getElementById('pie-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        const label = data.labels[tooltipItem.index];
+                        const value = data.datasets[0].data[tooltipItem.index];
+                        const percentage = ((value / totalCount) * 100).toFixed(1);
+                        return '${label}: ${percentage}%';
+                    }
+                }
+            }
+        }
+    });
+
+    // const failCells = document.querySelectorAll('.fail');
+    // failCells.forEach(cell => {
+    //     if (cell.textContent === '0') {
+    //         cell.classList.add('fail-empty');
+    //     }
+    // });
+</script>
+</body>
