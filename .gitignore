@@ -41,3 +41,4 @@ build/
 ### Exclude ###
 testLogs.log
 testReports
+*.log
